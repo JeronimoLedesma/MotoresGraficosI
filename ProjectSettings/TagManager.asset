@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Floor
+  - deathPlane
+  - collect
+  - Goal
   layers:
   - Default
   - TransparentFX

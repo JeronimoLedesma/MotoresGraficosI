@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -10,11 +11,18 @@ public class PlayerScript : MonoBehaviour
     public Vector2 inputVector;
     public Rigidbody rigidBody;
     bool canJump;
-    // Start is called before the first frame update
+    int collectedItems;
+    public TMPro.TextMeshProUGUI scoreText;
+    public int totalItems;
+    public GameObject goal;
+
     void Start()
     {
        rigidBody = GetComponent<Rigidbody>();
        canJump = true;
+       totalItems = GameObject.FindGameObjectsWithTag("collect").Length;
+       goal = GameObject.FindGameObjectWithTag("Goal");
+       goal.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,6 +50,25 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.CompareTag("deathPlane"))
         {
             SceneManager.LoadScene(0);
+        }
+
+        if (collision.gameObject.CompareTag("Goal"))
+        {
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("collect"))
+        {
+            Destroy(other.gameObject);
+            collectedItems++;
+            scoreText.text = collectedItems.ToString();
+            if (collectedItems == totalItems)
+            {
+               goal.SetActive(true);
+            }
         }
     }
 }
